@@ -1,0 +1,22 @@
+{
+  "name": "key-board",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sorvigolovaa/virtual-keyboard.git"
+  },
+  "author": "sorvigolova",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sorvigolovaa/virtual-keyboard/issues"
+  },
+  "homepage": "https://github.com/sorvigolovaa/virtual-keyboard#readme",
+  "devDependencies": {
+    "eslint": "^8.39.0"
+  }
+}
