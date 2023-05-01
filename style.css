@@ -1,0 +1,90 @@
+html
+{
+  font-family: 'Gloria Hallelujah', cursive;
+}
+body
+{
+  background-color: #622db6;
+}
+
+.keyboard {
+  font-family: 'Gloria Hallelujah', cursive;
+  display: grid;
+  grid-template-columns: repeat(15, 1fr);
+  grid-gap: 10px;
+  padding: 10px;
+}
+
+.screen {
+  width: 1480px;
+  height: 200px;
+  margin-top: 70px;
+  padding: 10px;
+  font-size: 25px;
+  margin-bottom: 20px;
+  background-color: #110654;
+  color: #fff;
+  font-family: 'Gloria Hallelujah', cursive;
+}
+
+button {
+  font-family: 'Gloria Hallelujah', cursive;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  font-size: 18px;
+  background-color: #110654;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+button:hover {
+  background-color: #dcdcdc;
+  color: #110654;
+}
+
+button:active {
+  background-color: #b3b3b3;
+}
+
+.active {
+  background-color: #3304ec !important;
+}
+
+
+button:nth-child(14){
+  grid-column: span 2;
+}
+
+button:nth-child(30){
+  grid-column: span 2;
+}
+
+button:nth-child(42){
+  grid-column: span 2;
+}
+
+button:nth-child(43){
+  grid-column: span 2;
+}
+
+button:nth-child(55){
+  grid-column: span 2;
+}
+
+button:nth-child(56){
+  grid-column: span 2;
+}
+
+button:nth-child(58){
+  grid-column: span 8;
+}
+
+h1{
+  text-align: center;
+  color: azure;
+}
