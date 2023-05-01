@@ -205,6 +205,7 @@ screen.value += isUpperCase ? keyText.toUpperCase() : keyText.toLowerCase();
   }
 }
 
+
 // Добавляем функцию handleArrowKeyClick
 function handleArrowKeyClick(arrowKey) {
   const cursorPosition = screen.selectionStart; // Получаем текущую позицию курсора в текстовом поле
