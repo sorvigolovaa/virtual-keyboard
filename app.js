@@ -1,3 +1,9 @@
+const title = document.createElement('h1');
+title.textContent = 'Press ctrl alt to switch the language';
+title.classList.add('title');
+document.body.appendChild(title);
+
+
 const keys = [
   { label: 'ё', en: '`', keyCode: '192' },
   { label: '1', en: '1', keyCode: '49' },
@@ -87,34 +93,42 @@ let isShiftPressed = false;
 
 screen.addEventListener('keypress', (event) => {
   event.preventDefault(); // Запрещаем ввод символа с физической клавиатуры
+  if (event.key === 'Backspace') {
+    screen.value = screen.value.slice(0, -1);
+  }
 });
 
 // Обработчик нажатия клавиши на физической клавиатуре
 document.addEventListener('keydown', (event) => {
   if(event.key.includes('ArrowLeft') || event.key.includes('ArrowRight') || event.key.includes('ArrowUp') ||  event.key.includes('ArrowDown')) return
-  // Проверяем, была ли уже нажата клавиша на виртуальной клавиатуре
-  const virtualKey = document.querySelector(`button[data-key-code="${event.keyCode}"]`);
-  if (virtualKey && !virtualKey.classList.contains('active')) {
-    virtualKey.classList.add('active');
-    handleKeyClick(virtualKey.textContent);
-  }
-
-  // Проверяем нажатие клавиш Shift, Ctrl и Alt
-  if (event.key === 'Shift') {
-    isShiftPressed = true;
-    updateKeyboardLayout(isRussianLayout, isCapsLockOn, isShiftPressed);
-  }
-  if (event.key === 'Control') {
-    isCtrlPressed = true;
-  }
-  if (event.key === 'Alt') {
-    isAltPressed = true;
-  }
-  
-  // Проверяем состояние Ctrl + Alt для смены языка
-  if (isCtrlPressed && isAltPressed) {
-    isRussianLayout = !isRussianLayout;
-    updateKeyboardLayout(isRussianLayout, isCapsLockOn, isShiftPressed);
+  if (event.key === 'Backspace') {
+    event.preventDefault(); // Запрещаем стандартное поведение (удаление символа)
+    screen.value = screen.value.slice(0, -1);
+  } 
+  else {
+    // Проверяем, была ли уже нажата клавиша на виртуальной клавиатуре
+    const virtualKey = document.querySelector(`button[data-key-code="${event.keyCode}"]`);
+    if (virtualKey && !virtualKey.classList.contains('active')) {
+      virtualKey.classList.add('active');
+      handleKeyClick(virtualKey.textContent);
+    }
+    // Проверяем нажатие клавиш Shift, Ctrl и Alt
+    if (event.key === 'Shift') {
+      isShiftPressed = true;
+      updateKeyboardLayout(isRussianLayout, isCapsLockOn, isShiftPressed);
+    }
+    if (event.key === 'Control') {
+      isCtrlPressed = true;
+    }
+    if (event.key === 'Alt') {
+      isAltPressed = true;
+    }
+    // Проверяем состояние Ctrl + Alt для смены языка
+    if (isCtrlPressed && isAltPressed) {
+      isRussianLayout = !isRussianLayout;
+      updateKeyboardLayout(isRussianLayout, isCapsLockOn, isShiftPressed);
+    }
+    
   }
 });
 
@@ -150,12 +164,10 @@ function updateKeyboardLayout(isRussian, isCapsLockOn, isShiftPressed) {
     const button = createKeyButton(label, keyData.keyCode, isCapsLockOn, isShiftPressed);
     keyboard.appendChild(button);
   });
+
 }
 
-
-// Изменение функции handleKeyClick
-// ...
-
+// Измененная функция handleKeyClick
 // Измененная функция handleKeyClick
 function handleKeyClick(keyText) {
   if (keyText === 'Backspace') {
@@ -166,27 +178,54 @@ function handleKeyClick(keyText) {
     screen.value += '\t';
   } else if (keyText === 'del') {
     screen.value = '';
-  } else if (keyText === 'CapsLock') {
+  } else if (keyText === 'Space') {
+    screen.value += ' ';
+  }
+   else if (keyText === 'CapsLock') {
     isCapsLockOn = !isCapsLockOn;
     updateKeyboardLayout(isRussianLayout, isCapsLockOn);
-  } else if (keyText === 'Shift') {
-    // Ничего не делаем при нажатии клавиши Shift
+  } else if (keyText === 'Shift' || keyText === 'Ctrl' || keyText === 'Alt') {
+    // Ничего не делаем при нажатии клавиш Shift, Ctrl или Alt
     return;
+  } else if (keyText === '↑' || keyText === '←' || keyText === '↓' || keyText === '→') {
+    handleArrowKeyClick(keyText); // Обрабатываем нажатие клавиш стрелок
   } else {
-    let isUpperCase = isCapsLockOn && !isRussianLayout;
-    if (isCapsLockOn && isRussianLayout && keyText.match(/[а-яё]/i)) {
-      isUpperCase = !isUpperCase;
-    }
-    if (!isCapsLockOn && !isRussianLayout && keyText.match(/[a-z]/i)) {
-      isUpperCase = !isUpperCase;
-    }
-    screen.value += isUpperCase ? keyText.toUpperCase() : keyText;
+    let isUpperCase = isCapsLockOn;
+
+if (isShiftPressed) {
+  isUpperCase = !isUpperCase;
+}
+
+if (isCapsLockOn && isShiftPressed && isRussianLayout && keyText.match(/[а-яё]/i)) {
+  isUpperCase = !isUpperCase;
+}
+
+screen.value += isUpperCase ? keyText.toUpperCase() : keyText.toLowerCase();
+
   }
 }
 
 
+// Добавляем функцию handleArrowKeyClick
+function handleArrowKeyClick(arrowKey) {
+  const cursorPosition = screen.selectionStart; // Получаем текущую позицию курсора в текстовом поле
 
-// ...
+  if (arrowKey === '↑') {
+    screen.selectionStart = cursorPosition - 1; // Перемещаем курсор на одну позицию вверх
+    screen.selectionEnd = cursorPosition - 1;
+  } else if (arrowKey === '←') {
+    screen.selectionStart = cursorPosition - 1; // Перемещаем курсор на одну позицию влево
+    screen.selectionEnd = cursorPosition - 1;
+  } else if (arrowKey === '↓') {
+    screen.selectionStart = cursorPosition + 1; // Перемещаем курсор на одну позицию вниз
+    screen.selectionEnd = cursorPosition + 1;
+  } else if (arrowKey === '→') {
+    screen.selectionStart = cursorPosition + 1; // Перемещаем курсор на одну позицию вправо
+    screen.selectionEnd = cursorPosition + 1;
+  }
+}
+
+
 
 
 // Обновляем раскладку клавиатуры на старте
@@ -224,7 +263,6 @@ keyboardKeys.forEach(key => {
     screen.value += key.textContent; // добавляем символ в текстовое поле
   });
 });
-
 
 
 

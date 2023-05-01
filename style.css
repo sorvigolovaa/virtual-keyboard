@@ -16,7 +16,7 @@ body
 }
 
 .screen {
-  width: 1500px;
+  width: 1480px;
   height: 200px;
   margin-top: 70px;
   padding: 10px;
@@ -82,4 +82,9 @@ button:nth-child(56){
 
 button:nth-child(58){
   grid-column: span 8;
+}
+
+h1{
+  text-align: center;
+  color: azure;
 }
